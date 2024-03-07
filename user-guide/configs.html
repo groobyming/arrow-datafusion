@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Configuration Settings &#8212; Arrow DataFusion  documentation</title>
+    <title>Configuration Settings &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -230,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -250,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -323,7 +329,7 @@
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -476,7 +482,7 @@ Environment variables are read during <code class="docutils literal notranslate"
 </tr>
 <tr class="row-even"><td><p>datafusion.execution.parquet.pushdown_filters</p></td>
 <td><p>false</p></td>
-<td><p>If true, filter expressions are be applied during the parquet decoding operation to reduce the number of rows decoded</p></td>
+<td><p>If true, filter expressions are be applied during the parquet decoding operation to reduce the number of rows decoded. This optimization is sometimes called “late materialization”.</p></td>
 </tr>
 <tr class="row-odd"><td><p>datafusion.execution.parquet.reorder_filters</p></td>
 <td><p>false</p></td>
@@ -516,10 +522,10 @@ Environment variables are read during <code class="docutils literal notranslate"
 </tr>
 <tr class="row-even"><td><p>datafusion.execution.parquet.max_row_group_size</p></td>
 <td><p>1048576</p></td>
-<td><p>Sets maximum number of rows in a row group</p></td>
+<td><p>Target maximum number of rows in each row group (defaults to 1M rows). Writing larger row groups requires more memory to write, but can get better compression and be faster to read.</p></td>
 </tr>
 <tr class="row-odd"><td><p>datafusion.execution.parquet.created_by</p></td>
-<td><p>datafusion version 33.0.0</p></td>
+<td><p>datafusion version 36.0.0</p></td>
 <td><p>Sets “created by” property</p></td>
 </tr>
 <tr class="row-even"><td><p>datafusion.execution.parquet.column_index_truncate_length</p></td>
@@ -590,6 +596,14 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>2</p></td>
 <td><p>This is the maximum number of RecordBatches buffered for each output file being worked. Higher values can potentially give faster write performance at the cost of higher peak memory consumption</p></td>
 </tr>
+<tr class="row-odd"><td><p>datafusion.execution.listing_table_ignore_subdirectory</p></td>
+<td><p>true</p></td>
+<td><p>Should sub directories be ignored when scanning directories for data files. Defaults to true (ignores subdirectories), consistent with Hive. Note that this setting does not affect reading partitioned tables (e.g. <code class="docutils literal notranslate"><span class="pre">/table/year=2021/month=01/data.parquet</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>datafusion.execution.enable_recursive_ctes</p></td>
+<td><p>false</p></td>
+<td><p>Should DataFusion support recursive CTEs Defaults to false since this feature is a work in progress and may not behave as expected</p></td>
+</tr>
 <tr class="row-odd"><td><p>datafusion.optimizer.enable_distinct_aggregation_soft_limit</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, the optimizer will push a limit operation into grouped aggregations which have no aggregate expressions, as a soft limit, emitting groups once the limit is reached, before all rows in the group are read.</p></td>
@@ -658,6 +672,14 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>1048576</p></td>
 <td><p>The maximum estimated size in bytes for one input side of a HashJoin will be collected into a single partition</p></td>
 </tr>
+<tr class="row-even"><td><p>datafusion.optimizer.hash_join_single_partition_threshold_rows</p></td>
+<td><p>131072</p></td>
+<td><p>The maximum estimated size in rows for one input side of a HashJoin will be collected into a single partition</p></td>
+</tr>
+<tr class="row-odd"><td><p>datafusion.optimizer.default_filter_selectivity</p></td>
+<td><p>20</p></td>
+<td><p>The default filter selectivity used by Filter Statistics when an exact selectivity cannot be determined. Valid values are between 0 (no selectivity) and 100 (all rows are selected).</p></td>
+</tr>
 <tr class="row-even"><td><p>datafusion.explain.logical_plan_only</p></td>
 <td><p>false</p></td>
 <td><p>When set to true, the explain statement will only print logical plans</p></td>
@@ -670,15 +692,19 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>false</p></td>
 <td><p>When set to true, the explain statement will print operator statistics for physical plans</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.sql_parser.parse_float_as_decimal</p></td>
+<tr class="row-odd"><td><p>datafusion.explain.show_sizes</p></td>
+<td><p>true</p></td>
+<td><p>When set to true, the explain statement will print the partition sizes</p></td>
+</tr>
+<tr class="row-even"><td><p>datafusion.sql_parser.parse_float_as_decimal</p></td>
 <td><p>false</p></td>
 <td><p>When set to true, SQL parser will parse float as decimal type</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.sql_parser.enable_ident_normalization</p></td>
+<tr class="row-odd"><td><p>datafusion.sql_parser.enable_ident_normalization</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, SQL parser will normalize ident (convert ident to lowercase when not quoted)</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.sql_parser.dialect</p></td>
+<tr class="row-even"><td><p>datafusion.sql_parser.dialect</p></td>
 <td><p>generic</p></td>
 <td><p>Configure the SQL dialect used by DataFusion’s parser; supported values include: Generic, MySQL, PostgreSQL, Hive, SQLite, Snowflake, Redshift, MsSQL, ClickHouse, BigQuery, and Ansi.</p></td>
 </tr>
@@ -715,12 +741,14 @@ Environment variables are read during <code class="docutils literal notranslate"
     </div>
   
     <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
@@ -730,7 +758,13 @@ Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

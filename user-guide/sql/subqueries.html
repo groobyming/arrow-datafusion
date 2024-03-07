@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Subqueries &#8212; Arrow DataFusion  documentation</title>
+    <title>Subqueries &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -230,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -250,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -323,7 +329,7 @@
   </div>
 
   <a class="navbar-brand" href="../../index.html">
-    <img src="../../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -421,7 +427,7 @@
 <h1>Subqueries<a class="headerlink" href="#subqueries" title="Link to this heading">¶</a></h1>
 <p>DataFusion supports <code class="docutils literal notranslate"><span class="pre">EXISTS</span></code>, <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">EXISTS</span></code>, <code class="docutils literal notranslate"><span class="pre">IN</span></code>, <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">IN</span></code> and Scalar Subqueries.</p>
 <p>The examples below are based on the following table.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">column_2</span><span class="w"> </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
@@ -433,7 +439,7 @@
 <h2>EXISTS<a class="headerlink" href="#exists" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">EXISTS</span></code> syntax can be used to find all rows in a relation where a correlated subquery produces one or more matches
 for that row. Only correlated subqueries are supported.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">column_2</span><span class="w"> </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
@@ -447,7 +453,7 @@ for that row. Only correlated subqueries are supported.</p>
 <h2>NOT EXISTS<a class="headerlink" href="#not-exists" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">EXISTS</span></code> syntax can be used to find all rows in a relation where a correlated subquery produces zero matches
 for that row. Only correlated subqueries are supported.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
 <span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="p">.</span>
 </pre></div>
 </div>
@@ -456,7 +462,7 @@ for that row. Only correlated subqueries are supported.</p>
 <h2>IN<a class="headerlink" href="#in" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">IN</span></code> syntax can be used to find all rows in a relation where a given expression’s value can be found in the
 results of a correlated subquery.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">column_2</span><span class="w"> </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
@@ -470,7 +476,7 @@ results of a correlated subquery.</p>
 <h2>NOT IN<a class="headerlink" href="#not-in" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">IN</span></code> syntax can be used to find all rows in a relation where a given expression’s value can not be found in the
 results of a correlated subquery.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
 <span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="p">.</span>
 </pre></div>
 </div>
@@ -479,7 +485,7 @@ results of a correlated subquery.</p>
 <h2>Scalar Subquery<a class="headerlink" href="#scalar-subquery" title="Link to this heading">¶</a></h2>
 <p>A scalar subquery can be used to produce a single value that can be used in many different contexts in a query. Here
 is an example of a filter using a scalar subquery. Only correlated subqueries are supported.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">❯</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">column_2</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">column_2</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">column_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">.</span><span class="n">column_1</span><span class="p">);</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
 <span class="o">|</span><span class="w"> </span><span class="n">column_1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">column_2</span><span class="w"> </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">----------+----------+</span>
@@ -520,12 +526,14 @@ is an example of a filter using a scalar subquery. Only correlated subqueries ar
     </div>
   
     <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
@@ -535,7 +543,13 @@ Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

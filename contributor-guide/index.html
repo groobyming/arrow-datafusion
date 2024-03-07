@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; Arrow DataFusion  documentation</title>
+    <title>Introduction &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -230,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -250,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -323,7 +329,7 @@
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -350,6 +356,13 @@
   <a class="reference internal nav-link" href="#">
    Introduction
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#finding-and-creating-issues-to-work-on">
+     Finding and Creating Issues to Work On
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#developer-s-guide">
@@ -482,6 +495,17 @@
      document
     </a>
    </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-format-toml-files">
+     How to format
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       .toml
+      </span>
+     </code>
+     files
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -532,16 +556,41 @@
 -->
 <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
-<p>We welcome and encourage contributions of all kinds, such as:</p>
+<p>We welcome and encourage contributions of all kinds, from all levels, such as:</p>
 <ol class="arabic simple">
-<li><p>Tickets with issue reports of feature requests</p></li>
+<li><p>Tickets with issue reports or feature requests</p></li>
+<li><p>Discussions</p></li>
 <li><p>Documentation improvements</p></li>
 <li><p>Code, both PR and (especially) PR Review.</p></li>
 </ol>
-<p>In addition to submitting new PRs, we have a healthy tradition of community members reviewing each other’s PRs. Doing so is a great way to help the community as well as get more familiar with Rust and the relevant codebases.</p>
-<p>You can find a curated
-<a class="reference external" href="https://github.com/apache/arrow-datafusion/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">good-first-issue</a>
-list to help you get started.</p>
+<p>In addition to submitting new PRs, we have a healthy tradition of community
+members reviewing each other’s PRs. Doing so is a great way to help the
+community as well as get more familiar with Rust and the relevant codebases.</p>
+<section id="finding-and-creating-issues-to-work-on">
+<h2>Finding and Creating Issues to Work On<a class="headerlink" href="#finding-and-creating-issues-to-work-on" title="Link to this heading">¶</a></h2>
+<p>You can find a curated <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">good-first-issue</a> list to help you get started.</p>
+<p>DataFusion is an open contribution project, and thus there is no particular
+project imposed deadline for completing any issue or any restriction on who can
+work on an issue, nor how many people can work on an issue at the same time.</p>
+<p>Contributors drive the project forward based on their own priorities and
+interests and thus you are free to work on any issue that interests you.</p>
+<p>If someone is already working on an issue that you want or need but hasn’t
+been able to finish it yet, you should feel free to work on it as well. In
+general it is both polite and will help avoid unnecessary duplication of work if
+you leave a note on an issue when you start working on it.</p>
+<p>If you want to work on an issue which is not already assigned to someone else
+and there are no comment indicating that someone is already working on that
+issue then you can assign the issue to yourself by submitting a single word
+comment <code class="docutils literal notranslate"><span class="pre">take</span></code>. This will assign the issue to yourself. However, if you are
+unable to make progress you should unassign the issue by using the <code class="docutils literal notranslate"><span class="pre">unassign</span> <span class="pre">me</span></code>
+link at the top of the issue page (and ask for help if are stuck) so that
+someone else can get involved in the work.</p>
+<p>If you plan to work on a new feature that doesn’t have an existing ticket, it is
+a good idea to open a ticket to discuss the feature. Advanced discussion often
+helps avoid wasted effort by determining early if the feature is a good fit for
+DataFusion before too much time is invested. It also often helps to discuss your
+ideas with the community to get feedback on implementation.</p>
+</section>
 </section>
 <section id="developer-s-guide">
 <h1>Developer’s guide<a class="headerlink" href="#developer-s-guide" title="Link to this heading">¶</a></h1>
@@ -599,9 +648,16 @@ cargo<span class="w"> </span>build
 <h3>Protoc Installation<a class="headerlink" href="#protoc-installation" title="Link to this heading">¶</a></h3>
 <p>Compiling DataFusion from sources requires an installed version of the protobuf compiler, <code class="docutils literal notranslate"><span class="pre">protoc</span></code>.</p>
 <p>On most platforms this can be installed from your system’s package manager</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt install -y protobuf-compiler
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Ubuntu
+$ sudo apt install -y protobuf-compiler
+
+# Fedora
 $ dnf install -y protobuf-devel
+
+# Arch Linux
 $ pacman -S protobuf
+
+# macOS
 $ brew install protobuf
 </pre></div>
 </div>
@@ -621,6 +677,7 @@ libprotoc<span class="w"> </span><span class="m">3</span>.12.4
 <li><p><code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span></code> to test</p></li>
 <li><p>etc.</p></li>
 </ul>
+<p>Note that running <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span></code> requires significant memory resources, due to cargo running many tests in parallel by default. If you run into issues with slow tests or system lock ups, you can significantly reduce the memory required by instead running <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--</span> <span class="pre">--test-threads=1</span></code>. For more information see <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues/5347">this issue</a>.</p>
 <p>Testing setup:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">rustup</span> <span class="pre">update</span> <span class="pre">stable</span></code> DataFusion uses the latest stable release of rust</p></li>
@@ -655,13 +712,13 @@ and tries to follow the Rust standard <a class="reference external" href="https:
 <h3>sqllogictests Tests<a class="headerlink" href="#sqllogictests-tests" title="Link to this heading">¶</a></h3>
 <p>DataFusion’s SQL implementation is tested using <a class="reference external" href="https://github.com/apache/arrow-datafusion/tree/main/datafusion/sqllogictest">sqllogictest</a> which are run like any other Rust test using <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--test</span> <span class="pre">sqllogictests</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sqllogictests</span></code> tests may be less convenient for new contributors who are familiar with writing <code class="docutils literal notranslate"><span class="pre">.rs</span></code> tests as they require learning another tool. However, <code class="docutils literal notranslate"><span class="pre">sqllogictest</span></code> based tests are much easier to develop and maintain as they 1) do not require a slow recompile/link cycle and 2) can be automatically updated via <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--test</span> <span class="pre">sqllogictests</span> <span class="pre">--</span> <span class="pre">--complete</span></code>.</p>
-<p>Like similar systems such as <a class="reference external" href="https://duckdb.org/dev/testing">DuckDB</a>, DataFusion has chosen to trade off a slightly higher barrier to contribution for longer term maintainability. While we are still in the process of <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues/6195">migrating some old sql_integration tests</a>, all new tests should be written using sqllogictests if possible.</p>
+<p>Like similar systems such as <a class="reference external" href="https://duckdb.org/dev/testing">DuckDB</a>, DataFusion has chosen to trade off a slightly higher barrier to contribution for longer term maintainability.</p>
 </section>
 <section id="rust-integration-tests">
 <h3>Rust Integration Tests<a class="headerlink" href="#rust-integration-tests" title="Link to this heading">¶</a></h3>
 <p>There are several tests of the public interface of the DataFusion library in the <a class="reference external" href="https://github.com/apache/arrow-datafusion/tree/main/datafusion/core/tests">tests</a> directory.</p>
 <p>You can run these tests individually using <code class="docutils literal notranslate"><span class="pre">cargo</span></code> as normal command such as</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-p<span class="w"> </span>datafusion<span class="w"> </span>--test<span class="w"> </span>dataframe
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-p<span class="w"> </span>datafusion<span class="w"> </span>--test<span class="w"> </span>parquet_exec
 </pre></div>
 </div>
 </section>
@@ -700,32 +757,37 @@ and tries to follow the Rust standard <a class="reference external" href="https:
 <h3>How to add a new scalar function<a class="headerlink" href="#how-to-add-a-new-scalar-function" title="Link to this heading">¶</a></h3>
 <p>Below is a checklist of what you need to do to add a new scalar function to DataFusion:</p>
 <ul class="simple">
-<li><p>Add the actual implementation of the function:</p>
+<li><p>Add the actual implementation of the function to a new module file within:</p>
 <ul>
-<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/physical-expr/src/string_expressions.rs">here</a> for string functions</p></li>
-<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/physical-expr/src/math_expressions.rs">here</a> for math functions</p></li>
-<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/physical-expr/src/datetime_expressions.rs">here</a> for datetime functions</p></li>
-<li><p>create a new module <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/physical-expr/src">here</a> for other functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions-array/src">here</a> for array functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/crypto">here</a> for crypto functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/datetime">here</a> for datetime functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/encoding">here</a> for encoding functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/math">here</a> for math functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/regex">here</a> for regex functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/string">here</a> for string functions</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src/unicode">here</a> for unicode functions</p></li>
+<li><p>create a new module <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/functions/src">here</a> for other functions.</p></li>
 </ul>
 </li>
-<li><p>In <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/physical-expr/src/functions.rs">physical-expr/src</a>, add:</p>
+<li><p>New function modules - for example a <code class="docutils literal notranslate"><span class="pre">vector</span></code> module, should use a <a class="reference external" href="https://doc.rust-lang.org/cargo/reference/features.html">rust feature</a> (for example <code class="docutils literal notranslate"><span class="pre">vector_expressions</span></code>) to allow DataFusion
+users to enable or disable the new module as desired.</p></li>
+<li><p>The implementation of the function is done via implementing <code class="docutils literal notranslate"><span class="pre">ScalarUDFImpl</span></code> trait for the function struct.</p>
 <ul>
-<li><p>a new variant to <code class="docutils literal notranslate"><span class="pre">BuiltinScalarFunction</span></code></p></li>
-<li><p>a new entry to <code class="docutils literal notranslate"><span class="pre">FromStr</span></code> with the name of the function as called by SQL</p></li>
-<li><p>a new line in <code class="docutils literal notranslate"><span class="pre">return_type</span></code> with the expected return type of the function, given an incoming type</p></li>
-<li><p>a new line in <code class="docutils literal notranslate"><span class="pre">signature</span></code> with the signature of the function (number and types of its arguments)</p></li>
-<li><p>a new line in <code class="docutils literal notranslate"><span class="pre">create_physical_expr</span></code>/<code class="docutils literal notranslate"><span class="pre">create_physical_fun</span></code> mapping the built-in to the implementation</p></li>
-<li><p>tests to the function.</p></li>
+<li><p>See the <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/advanced_udf.rs">advanced_udf.rs</a> example for an example implementation</p></li>
+<li><p>Add tests for the new function</p></li>
+</ul>
+</li>
+<li><p>To connect the implementation of the function add to the mod.rs file:</p>
+<ul>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">mod</span> <span class="pre">xyz;</span></code> where xyz is the new module file</p></li>
+<li><p>a call to <code class="docutils literal notranslate"><span class="pre">make_udf_function!(..);</span></code></p></li>
+<li><p>an item in <code class="docutils literal notranslate"><span class="pre">export_functions!(..);</span></code></p></li>
 </ul>
 </li>
 <li><p>In <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/sqllogictest/test_files">sqllogictest/test_files</a>, add new <code class="docutils literal notranslate"><span class="pre">sqllogictest</span></code> integration tests where the function is called through SQL against well known data and returns the expected result.</p>
 <ul>
 <li><p>Documentation for <code class="docutils literal notranslate"><span class="pre">sqllogictest</span></code> <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/sqllogictest/README.md">here</a></p></li>
-</ul>
-</li>
-<li><p>In <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion/expr/src/expr_fn.rs">expr/src/expr_fn.rs</a>, add:</p>
-<ul>
-<li><p>a new entry of the <code class="docutils literal notranslate"><span class="pre">unary_scalar_expr!</span></code> macro for the new function.</p></li>
 </ul>
 </li>
 <li><p>Add SQL reference documentation <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/docs/source/user-guide/sql/scalar_functions.md">here</a></p></li>
@@ -806,6 +868,25 @@ new specifications as you see fit.</p>
 </pre></div>
 </div>
 </section>
+<section id="how-to-format-toml-files">
+<h2>How to format <code class="docutils literal notranslate"><span class="pre">.toml</span></code> files<a class="headerlink" href="#how-to-format-toml-files" title="Link to this heading">¶</a></h2>
+<p>We use <code class="docutils literal notranslate"><span class="pre">taplo</span></code> to format <code class="docutils literal notranslate"><span class="pre">.toml</span></code> files.</p>
+<p>For Rust developers, you can install it via:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span>install<span class="w"> </span>taplo-cli<span class="w"> </span>--locked
+</pre></div>
+</div>
+<blockquote>
+<div><p>Refer to the <a class="reference external" href="https://taplo.tamasfe.dev/cli/installation/binary.html">Installation section</a> on other ways to install it.</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>taplo<span class="w"> </span>--version
+taplo<span class="w"> </span><span class="m">0</span>.9.0
+</pre></div>
+</div>
+<p>After you’ve confirmed your <code class="docutils literal notranslate"><span class="pre">taplo</span></code> version, you can format all the <code class="docutils literal notranslate"><span class="pre">.toml</span></code> files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>taplo<span class="w"> </span>fmt
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -837,12 +918,14 @@ new specifications as you see fit.</p>
     </div>
   
     <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
@@ -852,7 +935,13 @@ Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>
